@@ -1,0 +1,1 @@
+from smart.filemanager.SmartFileManager import SmartFileManager
