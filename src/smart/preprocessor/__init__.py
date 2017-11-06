@@ -1,1 +1,2 @@
 from smart.preprocessor.SWEliminator import SWEliminator
+from smart.preprocessor.DocumentTokenizer import DocumentTokenizer
