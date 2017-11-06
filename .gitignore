@@ -100,8 +100,5 @@ ENV/
 # mypy
 .mypy_cache/
 
-# virtualenv
-smart
-
 # pycharm
 .idea
