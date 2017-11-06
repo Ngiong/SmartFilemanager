@@ -1,5 +1,9 @@
 from smart.preprocessor import *
 
+from src.smart.preprocessor.DocumentStemmer import DocumentStemmer
+from src.smart.preprocessor.DocumentTokenizer import DocumentTokenizer
+from src.smart.preprocessor.SWEliminator import SWEliminator
+
 
 class DocumentPreprocessor(object):
     def __init__(self, document_str):
@@ -17,6 +21,11 @@ class DocumentPreprocessor(object):
     def eliminate_stopwatch(self):
         swEliminator = SWEliminator(self.document)
         self.document = swEliminator.getSWEliminatedTokens()
+        return self
+
+    def stem(self):
+        doc_stemmer = DocumentStemmer(self.document)
+        self.document = doc_stemmer.stem()
         return self
 
     def vectorize(self):

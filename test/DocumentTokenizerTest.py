@@ -1,4 +1,4 @@
-from smart.preprocessor import DocumentTokenizer
+from src.smart.preprocessor import DocumentTokenizer
 
 
 class DocumentTokenizerTest(object):
