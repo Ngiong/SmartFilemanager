@@ -1,0 +1,1 @@
+from smart.summarizer.DocumentsSummarizer import DocumentsSummarizer
