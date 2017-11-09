@@ -3,6 +3,8 @@ import platform
 import pandas as pd
 from smart.preprocessor import DocumentPreprocessor
 from smart.clustering import DocumentCluster
+from smart.summarizer import DocumentsSummarizer
+
 
 class SmartFileManager(object):
     PATH = '';
@@ -38,19 +40,23 @@ class SmartFileManager(object):
         else :
             os.rename(filename, dirname + '/' + filename)
 
-    #TODO: moving into corresponding folder
-    def manage(self):
-        num_cluster = 2
-
+    ###
+    # TODO: handle empty document / empty directory
+    ###
+    def manage(self, num_cluster):
         self.listFiles()
         print(self.titles)
 
         # get the list of stemmed word
         list_of_stemmed_document = []
+        stemmed_documents = dict()
+        item_i = 0
         for item in self.document_content :
             preprocessor = DocumentPreprocessor(item)
             word_stemmed = preprocessor.convert_lowercase().tokenize().eliminate_stopwatch().stem().to_string()
             list_of_stemmed_document.append(word_stemmed)
+            stemmed_documents[self.titles[item_i]] = word_stemmed
+            item_i += 1
 
         # vectorize
         tfidf_matrix = DocumentPreprocessor(list_of_stemmed_document).vectorize()
@@ -65,6 +71,24 @@ class SmartFileManager(object):
         print("Result of clustering : ")
         for i in range(num_cluster):
             print("Cluster %d titles:\n" % i)
+
+            # Get contents for summarization
+            cluster_contents = []
             for title in frame.ix[i]['title'].values.tolist():
+                cluster_contents.append(stemmed_documents[title])
                 print(' %s,' % title)
             print('\n')
+
+            # Summarization
+            docs_summarizer = DocumentsSummarizer(cluster_contents)
+            document_keywords = docs_summarizer.getSummarization()
+            print('Candidates: ', document_keywords)
+            ###
+            # TODO: user can choose the most suitable keyword for each cluster
+            ###
+            cluster_name = document_keywords[0]
+
+            # Move document to subfolder
+            for title in frame.ix[i]['title'].values.tolist():
+                self.moveDocument(title, cluster_name)
+

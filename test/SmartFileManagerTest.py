@@ -2,6 +2,7 @@ from smart.filemanager import SmartFileManager
 
 class SmartFileManagerTest(object):
     TESTING_PATH = '/home/varian97/Desktop/testing/'
+    TESTING_PATH_2 = 'C://Users//Ngiong//Desktop//testing'
     TESTING_FILE_READ = 'ConstituencyParsing.txt'
     TESTING_DIRNAME = 'hello_from_the_other_side'
 
@@ -23,14 +24,14 @@ class SmartFileManagerTest(object):
 
     def test_manage(self):
         sfm = SmartFileManager(self.TESTING_PATH)
-        sfm.manage()
+        sfm.manage(2)
 
     def runTest(self):
-        #self.testListFiles()
-        #self.testGetDocument()
+        # self.testListFiles()
+        # self.testGetDocument()
         self.test_manage()
-        #self.testMakeDirectory()
-        #self.testMoveDocument()
+        # self.testMakeDirectory()
+        # self.testMoveDocument()
         return 0
 
 sfmTest = SmartFileManagerTest()

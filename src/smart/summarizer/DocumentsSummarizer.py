@@ -7,4 +7,4 @@ class DocumentsSummarizer(object):
 
     def getSummarization(self):
         concatenated_document = ' '.join(self.documents)
-        return keywords(concatenated_document)
+        return keywords(concatenated_document, split=True)
