@@ -1,5 +1,5 @@
 import os
-
+import platform
 
 class SmartFileManager(object):
     PATH = '';
@@ -22,4 +22,8 @@ class SmartFileManager(object):
 
     def moveDocument(self, filename, dirname):
         if not os.path.isdir(dirname): os.mkdir(dirname)
-        os.rename(filename, dirname+'\\'+filename)
+
+        if platform.system() == 'Windows':
+            os.rename(filename, dirname+'\\'+filename)
+        else :
+            os.rename(filename, dirname + '/' + filename)

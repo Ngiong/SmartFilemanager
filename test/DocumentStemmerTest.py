@@ -1,5 +1,5 @@
-from src.smart.preprocessor import DocumentStemmer
-from src.smart.preprocessor import DocumentTokenizer
+from smart.preprocessor import DocumentStemmer
+from smart.preprocessor import DocumentTokenizer
 
 class DocumentStemmerTest(object):
     def test_stemmer (self):

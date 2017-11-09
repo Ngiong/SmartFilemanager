@@ -1,4 +1,4 @@
-from src.smart.preprocessor.DocumentVectorizer import DocumentVectorizer
+from smart.preprocessor.DocumentVectorizer import DocumentVectorizer
 
 class DocumentVectorizerTest(object):
     def test_vectorizer(self):

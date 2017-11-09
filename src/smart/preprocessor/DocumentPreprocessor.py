@@ -1,10 +1,5 @@
 from smart.preprocessor import *
 
-from src.smart.preprocessor.DocumentStemmer import DocumentStemmer
-from src.smart.preprocessor.DocumentTokenizer import DocumentTokenizer
-from src.smart.preprocessor.SWEliminator import SWEliminator
-
-
 class DocumentPreprocessor(object):
     def __init__(self, document_str):
         self.document = document_str
