@@ -1,3 +1,5 @@
 from smart.preprocessor.SWEliminator import SWEliminator
 from smart.preprocessor.DocumentTokenizer import DocumentTokenizer
 from smart.preprocessor.DocumentStemmer import DocumentStemmer
+from smart.preprocessor.DocumentVectorizer import DocumentVectorizer
+from smart.preprocessor.DocumentPreprocessor import DocumentPreprocessor

@@ -15,7 +15,11 @@ class DocumentPreprocessor(object):
 
     def eliminate_stopwatch(self):
         swEliminator = SWEliminator(self.document)
-        self.document = swEliminator.getSWEliminatedTokens()
+        eliminated_word = swEliminator.getSWEliminatedTokens()
+        self.document = ''
+        for word in eliminated_word:
+            self.document += word + ' '
+        self.document = self.document[:len(self.document)-1]
         return self
 
     def stem(self):
@@ -24,4 +28,9 @@ class DocumentPreprocessor(object):
         return self
 
     def vectorize(self):
-        return 0
+        vectorizer = DocumentVectorizer(self.document)
+        out = vectorizer.vectorize()
+        return out
+
+    def to_string(self):
+        return self.document
