@@ -11,20 +11,24 @@ class MainWindow(object):
         frame = Frame(self.window)
         frame.pack(expand=TRUE, fill=BOTH)
 
+        background_image = PhotoImage(file = '../res/bgimage.png')
+        background_label = Label(frame, image = background_image)
+        background_label.pack(expand=TRUE, fill=BOTH)
+
         # DIRECTORY PICKER
-        browser_frame = Frame(frame, bg='red')
-        browser_frame.place(anchor = 'c', relx = 0.5, rely = 0.65)
+        browser_frame = Frame(frame, bg='#009143', bd=1)
+        browser_frame.config(highlightbackground='black')
+        browser_frame.place(anchor = 'c', relx = 0.35, rely = 0.65)
 
         self.directory_text = Entry(browser_frame, width = 50)
-        # self.directory_text.config(state = DISABLED)
         self.directory_text.grid(column = 0, row = 0, padx = 10, pady = 10)
 
         browse_button = Button(browser_frame, text='Browse', command=self.onClick_browseBtn)
         browse_button.grid(column = 1, row = 0, padx = 10, pady = 10)
 
         # MAIN BUTTON
-        button_frame = Frame(frame, bg='blue')
-        button_frame.place(anchor = 'c', relx = 0.75, rely = 0.85)
+        button_frame = Frame(frame)
+        button_frame.place(anchor = 'c', relx = 0.85, rely = 0.85)
 
         quit_button = Button(button_frame, text='QUIT :(', command=self.onClick_quitBtn)
         quit_button.pack(side = RIGHT, padx = 5)
