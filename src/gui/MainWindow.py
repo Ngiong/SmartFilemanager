@@ -1,5 +1,7 @@
 from tkinter import *
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
+
+import os
 
 
 class MainWindow(object):
@@ -26,6 +28,17 @@ class MainWindow(object):
         browse_button = Button(browser_frame, text='Browse', command=self.onClick_browseBtn)
         browse_button.grid(column = 1, row = 0, padx = 10, pady = 10)
 
+        # K PARAMETER INPUT
+        k_parameter_frame = Frame(frame)
+        k_parameter_frame.place(anchor = 'c', relx = 0.1, rely = 0.85)
+
+        k_label = Label(k_parameter_frame, text = '# Clusters = ')
+        k_label.grid(row = 0, column = 0)
+
+        self.k_text = Entry(k_parameter_frame, width = 5)
+        self.k_text.insert(0, 3)
+        self.k_text.grid(row = 0, column = 1)
+
         # MAIN BUTTON
         button_frame = Frame(frame)
         button_frame.place(anchor = 'c', relx = 0.85, rely = 0.85)
@@ -44,7 +57,20 @@ class MainWindow(object):
         self.directory_text.insert(0, dirpath)
 
     def onClick_clusterBtn(self):
-        print('Dung tek dung tek dung... bedes bedes bedes... lulululululu.. woooo!!!!!')
+        try:
+            if not self.directory_text.get() or not self.k_text.get():
+                raise Exception('Directory path and # Clusters cannot be NULL.')
+            if not os.path.isdir(self.directory_text.get()):
+                raise Exception('Directory path does not exist.')
+            if int(self.k_text.get()) <= 0:
+                raise Exception('# Clusters must be greater than 0.')
+
+            messagebox.showinfo('Clustering...', 'SIAPPP BOSS!!')
+
+            # Do clustering here :)
+
+        except Exception as e:
+            messagebox.showerror('Exception caught', str(e))
 
     def onClick_quitBtn(self):
         self.window.destroy()
