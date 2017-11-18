@@ -82,11 +82,8 @@ class SmartFileManager(object):
             # Summarization
             docs_summarizer = DocumentsSummarizer(cluster_contents)
             document_keywords = docs_summarizer.getSummarization()
-            print('Candidates: ', document_keywords)
-            ###
-            # TODO: user can choose the most suitable keyword for each cluster
-            ###
-            cluster_name = document_keywords[0]
+            print('Some Suggestion Candidates: ', document_keywords)
+            cluster_name = input("Please enter the name for the folder : ")
 
             # Move document to subfolder
             for title in frame.ix[i]['title'].values.tolist():
