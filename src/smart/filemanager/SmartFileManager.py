@@ -1,9 +1,14 @@
 import os
 import platform
 import pandas as pd
+from io import StringIO
 from smart.preprocessor import DocumentPreprocessor
 from smart.clustering import DocumentCluster
 from smart.summarizer import DocumentsSummarizer
+from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
+from pdfminer.pdfpage import PDFPage
+from pdfminer.converter import TextConverter
+from pdfminer.layout import LAParams
 
 
 class SmartFileManager(object):
@@ -24,9 +29,12 @@ class SmartFileManager(object):
             print(file)
 
     def getDocument(self, filename):
-        file_open = open(filename, 'r')
-        result = file_open.read()
-        print(result)
+        ext = os.path.splitext(filename)[1]
+        if (ext == '.pdf'):
+            result = self.pdfPathToTxt(filename)
+        else:
+            file_open = open(filename, 'r')
+            result = file_open.read()
         return result
 
     def makeDirectory(self, dirname):
@@ -40,31 +48,54 @@ class SmartFileManager(object):
         else :
             os.rename(filename, dirname + '/' + filename)
 
+    def pdfPathToTxt(self, path):
+        rsrcmgr = PDFResourceManager()
+        sio = StringIO()
+        codec = 'utf-8'
+        laparams = LAParams()
+        device = TextConverter(rsrcmgr, sio, codec=codec, laparams=laparams)
+        interpreter = PDFPageInterpreter(rsrcmgr, device)
+        fp = open(path, 'rb')
+        for page in PDFPage.get_pages(fp):
+            interpreter.process_page(page)
+        fp.close()
+        text = sio.getvalue()
+        device.close()
+        sio.close()
+        return text
+
     ###
     # TODO: handle empty document / empty directory
     ###
     def manage(self, num_cluster):
+        print('Load File...')
         self.listFiles()
         print(self.titles)
 
         # get the list of stemmed word
+        print('Preprocessing...')
         list_of_stemmed_document = []
         stemmed_documents = dict()
         item_i = 0
         for item in self.document_content :
             preprocessor = DocumentPreprocessor(item)
+            print('  Preprocessing '
+                  + self.titles[item_i])
             word_stemmed = preprocessor.convert_lowercase().tokenize().eliminate_stopwatch().stem().to_string()
             list_of_stemmed_document.append(word_stemmed)
             stemmed_documents[self.titles[item_i]] = word_stemmed
             item_i += 1
 
         # vectorize
+        print('Vectorizing...')
         tfidf_matrix = DocumentPreprocessor(list_of_stemmed_document).vectorize()
 
         # clustering
+        print('Clustering...')
         clusters = DocumentCluster(tfidf_matrix).cluster(num_cluster).labels_.tolist()
 
         # mapping cluster and document
+        print('Cluster-Document mapping...')
         documents = {'title' : self.titles, 'content' : self.document_content, 'cluster' : clusters}
         frame = pd.DataFrame(documents, index=[clusters], columns=['title', 'cluster'])
 
