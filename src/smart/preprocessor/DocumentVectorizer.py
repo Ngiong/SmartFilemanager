@@ -5,7 +5,7 @@ class DocumentVectorizer(object):
         self.document = document
 
     def vectorize(self):
-        vectorizer = TfidfVectorizer()
+        vectorizer = TfidfVectorizer(use_idf=False)
         self.document = vectorizer.fit_transform(self.document)
         return self.document
 
