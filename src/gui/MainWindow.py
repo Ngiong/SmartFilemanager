@@ -3,6 +3,8 @@ from tkinter import filedialog, messagebox
 
 import os
 
+from smart.filemanager import SmartFileManager
+
 
 class MainWindow(object):
     def start(self):
@@ -65,9 +67,13 @@ class MainWindow(object):
             if int(self.k_text.get()) <= 0:
                 raise Exception('# Clusters must be greater than 0.')
 
-            messagebox.showinfo('Clustering...', 'SIAPPP BOSS!!')
+            messagebox.showinfo('Clustering...', 'SIAPPP BOSS!! Ditunggu yach... :)')
 
             # Do clustering here :)
+            sfm = SmartFileManager(self.directory_text.get(), use_gui=True)
+            sfm.manage(int(self.k_text.get()))
+
+            messagebox.showinfo('DONE', 'SUDAH SELESAI BOSS!!')
 
         except Exception as e:
             messagebox.showerror('Exception caught', str(e))

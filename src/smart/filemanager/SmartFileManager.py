@@ -1,5 +1,7 @@
 import os
 import platform
+from tkinter import simpledialog
+
 import pandas as pd
 from io import StringIO
 from smart.preprocessor import DocumentPreprocessor
@@ -14,10 +16,11 @@ from pdfminer.layout import LAParams
 class SmartFileManager(object):
     PATH = '';
 
-    def __init__(self, path):
+    def __init__(self, path, use_gui = False):
         self.PATH = path
         self.titles = []
         self.document_content = []
+        self.use_gui = use_gui
         os.chdir(self.PATH)
 
     def listFiles(self):
@@ -101,20 +104,29 @@ class SmartFileManager(object):
 
         print("Result of clustering : ")
         for i in range(num_cluster):
+            gui_text = ''
             print("Cluster %d titles:\n" % i)
+            gui_text += "Cluster %d titles:\n\n" % i
 
             # Get contents for summarization
             cluster_contents = []
             for title in frame.ix[i]['title'].values.tolist():
                 cluster_contents.append(stemmed_documents[title])
                 print(' %s,' % title)
+                gui_text += ' %s\n' % title
             print('\n')
+            gui_text += '\n'
 
             # Summarization
             docs_summarizer = DocumentsSummarizer(cluster_contents)
             document_keywords = docs_summarizer.getSummarization()
-            print('Some Suggestion Candidates: ', document_keywords)
-            cluster_name = input("Please enter the name for the folder : ")
+            print('Some Suggestion Candidates: ', document_keywords[:7])
+            gui_text += 'Some Suggestion Candidates: ' + str(document_keywords[:7]) + '\n'
+
+            if self.use_gui:
+                cluster_name = simpledialog.askstring('Please enter the name for the folder', gui_text)
+            else:
+                cluster_name = input("Please enter the name for the folder : ")
 
             # Move document to subfolder
             for title in frame.ix[i]['title'].values.tolist():
